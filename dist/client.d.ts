@@ -2,9 +2,6 @@ import { WithRevValues, WithoutRefValues, type DraftsProxy, type InvocationDraft
 import { type GetArgs, type GetResponseData, type LocalInvocation, type Meta, type Methods, type ProxyAPI, type RequestOptions } from "./types/contracts";
 import type * as JMAP from "./types/jmap";
 import type * as JMAPMail from "./types/jmap-mail";
-export type HttpHeaders = {
-    [headerName: string]: string;
-};
 export type ClientConfig = {
     /**
      * The tokenType used to authenticate all requests. (bearer, basic, jwt ...)
@@ -18,10 +15,6 @@ export type ClientConfig = {
      * The URL of the JMAP session resources
      */
     sessionUrl: string;
-    /**
-     * Headers to send with every request
-     */
-    httpHeaders?: HttpHeaders;
     /**
      * A map of custom entities and their required capability identifiers
      *
@@ -55,7 +48,7 @@ export declare class JamClient<Config extends ClientConfig = ClientConfig> {
     /**
      * Retrieve fresh session data
      */
-    static loadSession(sessionUrl: string, authHeader: string, httpHeaders?: HttpHeaders): Promise<any>;
+    static loadSession(sessionUrl: string, authHeader: string): Promise<any>;
     /**
      * Send a JMAP request containing a single method call
      */

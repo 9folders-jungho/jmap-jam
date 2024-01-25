@@ -26,10 +26,6 @@ import {
 import type * as JMAP from "./types/jmap";
 import type * as JMAPMail from "./types/jmap-mail";
 
-export type HttpHeaders = {
-  [headerName: string]: string
-}
-
 export type ClientConfig = {
   /**
    * The tokenType used to authenticate all requests. (bearer, basic, jwt ...)
@@ -45,11 +41,6 @@ export type ClientConfig = {
    * The URL of the JMAP session resources
    */
   sessionUrl: string;
-
-  /**
-   * Headers to send with every request
-   */
-  httpHeaders?: HttpHeaders;
 
   /**
    * A map of custom entities and their required capability identifiers
@@ -92,18 +83,17 @@ export class JamClient<Config extends ClientConfig = ClientConfig> {
       ...Object.entries(knownCapabilities),
     ]);
 
-    this.session = JamClient.loadSession(config.sessionUrl, this.authHeader, config.httpHeaders);
+    this.session = JamClient.loadSession(config.sessionUrl, this.authHeader);
   }
 
   /**
    * Retrieve fresh session data
    */
-  static async loadSession(sessionUrl: string, authHeader: string, httpHeaders?: HttpHeaders) {
+  static async loadSession(sessionUrl: string, authHeader: string) {
     return fetch(sessionUrl, {
       headers: {
         Authorization: authHeader,
         Accept: "application/json",
-        ...(httpHeaders ? httpHeaders : {}),        
       },
       cache: "no-cache",
     }).then((res) => res.json());
