@@ -372,7 +372,7 @@ export class JamClient<Config extends ClientConfig = ClientConfig> {
     types: "*" | Array<JMAPMail.Entity>;
     ping: number;
     closeafter?: JMAP.EventSourceArguments["closeafter"];
-  }, headers: { [key: string]: string }) {
+  }, opts: { [key: string]: any }) {
     const params: JMAP.EventSourceArguments = {
       types: options.types === "*" ? "*" : options.types.join(","),
       closeafter: options.closeafter ?? "no",
@@ -385,24 +385,30 @@ export class JamClient<Config extends ClientConfig = ClientConfig> {
 
     const urlString = url.toString();
 
-    const opts = {
+    let evtOpts = {
       headers: {}
     };
 
     if (this.authHeader != null) {
-      opts.headers = {
+      evtOpts.headers = {
         Authorization: this.authHeader
       }
     }
 
-    if (headers != null) {
-      opts.headers = {
-        ...opts.headers,
-        ...headers
+    if (opts != null) {
+      const tmpHeader = {
+        ...evtOpts.headers,
+        ...opts.headers
+      };
+
+      evtOpts = {
+        ...evtOpts,
+        ...opts,
+        headers: tmpHeader
       }
     }
 
-    return new EventSourcePolyfill(urlString, opts);
+    return new EventSourcePolyfill(urlString, evtOpts);
   }
 
   /**
