@@ -86,6 +86,8 @@ export declare class JamClient<Config extends ClientConfig = ClientConfig> {
         types: "*" | Array<JMAPMail.Entity>;
         ping: number;
         closeafter?: JMAP.EventSourceArguments["closeafter"];
+    }, headers: {
+        [key: string]: string;
     }): Promise<EventSourcePolyfill>;
     /**
      * A fluent API using {entity}.{operation} syntax
