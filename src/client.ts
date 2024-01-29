@@ -1,3 +1,5 @@
+import { EventSourcePolyfill } from "event-source-polyfill";
+
 import {
   getCapabilitiesForMethodCalls,
   knownCapabilities,
@@ -381,7 +383,13 @@ export class JamClient<Config extends ClientConfig = ClientConfig> {
 
     const url = expandURITemplate(eventSourceUrl, params);
 
-    return new EventSource(url);
+    const urlString = url.toString();
+
+    return new EventSourcePolyfill(urlString, {
+      headers: {
+        Authorization: this.authHeader
+      }
+    });
   }
 
   /**

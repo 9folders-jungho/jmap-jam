@@ -1,3 +1,4 @@
+import { EventSourcePolyfill } from "event-source-polyfill";
 import { WithRevValues, WithoutRefValues, type DraftsProxy, type InvocationDraft } from "./request-drafts";
 import { type GetArgs, type GetResponseData, type LocalInvocation, type Meta, type Methods, type ProxyAPI, type RequestOptions } from "./types/contracts";
 import type * as JMAP from "./types/jmap";
@@ -85,7 +86,7 @@ export declare class JamClient<Config extends ClientConfig = ClientConfig> {
         types: "*" | Array<JMAPMail.Entity>;
         ping: number;
         closeafter?: JMAP.EventSourceArguments["closeafter"];
-    }): Promise<EventSource>;
+    }): Promise<EventSourcePolyfill>;
     /**
      * A fluent API using {entity}.{operation} syntax
      *
